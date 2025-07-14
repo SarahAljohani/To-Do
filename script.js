@@ -71,4 +71,39 @@ function updateTaskCount() {
   }
 }
 
+function fetchTodosFromAPI() {
+  fetch("https://jsonplaceholder.typicode.com/todos?_limit=5")     
+    .then(res => res.json())
+    .then(data => {
+      data.forEach(todo => {
+        addTaskFromAPI(todo.title);
+      });
+      updateTaskCount();
+    })
+    .catch(error => console.error("Error fetching todos:", error));
+}
+
+function addTaskFromAPI(title) {
+  let li = document.createElement("li");
+
+  let taskText = document.createElement("span");
+  taskText.classList.add("task-text");
+  taskText.textContent = title;
+  li.appendChild(taskText);
+
+  let deleteBtn = document.createElement("span");
+  deleteBtn.innerHTML = "\u00d7";
+  deleteBtn.classList.add("delete-btn");
+  li.appendChild(deleteBtn);
+
+  let editBtn = document.createElement("span");
+  editBtn.innerHTML = "✏️";
+  editBtn.classList.add("edit-btn");
+  li.appendChild(editBtn);
+
+  listContainer.appendChild(li);
+}
+
+
 showTask();
+fetchTodosFromAPI();
